@@ -21,11 +21,11 @@ namespace WindowsFormsAppKryptoAndCompression.Compression_algorytm
 
     public sealed class CompressionLz77 : ICompressionLz77
     {
-        //arrays size 
+        
         private readonly ushort dictionarySize;
         private readonly ushort bufferSize;
 
-        //how many bits is needed to write: Position and Lenght from LZ77 coder output 
+        
         //private readonly ushort _dictionaryBitLen;
         private readonly ushort bufferBitLen;
 
@@ -173,8 +173,8 @@ namespace WindowsFormsAppKryptoAndCompression.Compression_algorytm
                     outputStream.Write(coderOut);
                 }
             }
-            
-            //flush data and close files
+
+            //opróżnij dane i zamknij pliki
             inputStream.Close();
             inputFile.Close();
 
@@ -192,8 +192,8 @@ namespace WindowsFormsAppKryptoAndCompression.Compression_algorytm
             {
                 string NameFile = fileName.Remove(fileName.Length - 5);
 
-                string newFileOut = AESRJ.GetUniqueFilename(NameFile); // co tu 
-                var inputFile = File.OpenRead(fileName); // co tu 
+                string newFileOut = AESRJ.GetUniqueFilename(NameFile); 
+                var inputFile = File.OpenRead(fileName); 
                 var inputStream = new BinaryReader(inputFile);
 
 
@@ -243,14 +243,14 @@ namespace WindowsFormsAppKryptoAndCompression.Compression_algorytm
                     //6
                     outputStream.Write(dest);
                 }
-                //last iteration  
+                //ostatnia iteracja
                 var last = new Lz77Model(
                     Position: inputStream.ReadUInt16(),
                     Length: inputStream.ReadByte(),
                     Byte: inputStream.ReadByte());
                 outputStream.Write(dictionary.Slice(dictionarySegmentOffset + last.Position, last.Length));
 
-                //flush data and close file
+                //opróżnij dane i zamknij plik
                 inputStream.Close();
                 inputFile.Close();
 
@@ -308,8 +308,8 @@ namespace WindowsFormsAppKryptoAndCompression.Compression_algorytm
                 ///int[] tab = new int[buffer.Length];
                 ///
                 var tab = BuildSearchTable(buffer);
-                int m = 0;  // Beginning of the first fit in dictionary
-                int i = 0;  // Position of the current char in buffer
+                int m = 0;  // Początek pierwszego dopasowania w słowniku
+                int i = 0;  // Pozycja bieżącego znaku w buforze
 
                 int bestPos = 0;
                 int bestLength = 0;

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO.Compression;
 using System.Linq;
 using System.Text;
@@ -16,27 +17,45 @@ namespace AppKryptoAndCompression.Compression_zip
 
         public string CompressFileZip(string sourceFileName, BackgroundWorker worker)
         {
-            using(ZipArchive archive = ZipFile.Open(Path.ChangeExtension(sourceFileName, ".zip"), ZipArchiveMode.Create))
+            try
             {
+                using (ZipArchive archive = ZipFile.Open(Path.ChangeExtension(sourceFileName, ".zip"), ZipArchiveMode.Create))
+                {
 
-                archive.CreateEntryFromFile(sourceFileName, Path.GetFileName(sourceFileName));
-                worker.ReportProgress(1);
+                    archive.CreateEntryFromFile(sourceFileName, Path.GetFileName(sourceFileName));
+                    worker.ReportProgress(1);
+                }
+                return Path.ChangeExtension(sourceFileName, ".zip");
+
             }
-            return Path.ChangeExtension(sourceFileName, ".zip");
+            catch(Exception e) { 
+               
+                return e.Message;   
+            }
+            
         }
 
         public void DeCompressFileZip(string sourceFileName, BackgroundWorker worker)
         {
-
-            using(ZipArchive archive = ZipFile.Open(Path.ChangeExtension(sourceFileName, ".zip"), ZipArchiveMode.Read))
+            try
             {
-                string directoryName = Path.GetDirectoryName(sourceFileName);
-                // var test= AESRJ.GetUniqueFilename(filePath);
-                archive.ExtractToDirectory(directoryName, true);
-                worker.ReportProgress(1);
+                using (ZipArchive archive = ZipFile.Open(Path.ChangeExtension(sourceFileName, ".zip"), ZipArchiveMode.Read))
+                {
+                    string directoryName = Path.GetDirectoryName(sourceFileName);
+                    archive.ExtractToDirectory(directoryName, true);
+                    worker.ReportProgress(1);
+                }
             }
+            catch (Exception e)
+            {
+
+                Console.WriteLine(e.Message);
+            }
+            
 
         }
+       
+
 
     }
 }
